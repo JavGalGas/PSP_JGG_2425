@@ -14,11 +14,20 @@ public class Main {
         int n2 = sc.nextInt();
         sc.close();
         Thread hilo1 = new Thread() {
-            for(int i = n1; i > n2; i++) {
-                System.out.println(i);
-                Thread.sleep(random.nextLong(1,1000));
+            @Override
+            public void run() {
+                for(int i = n1; i < n2; i++) {
+                    System.out.println(i);
+                    try{
+                        Thread.sleep(random.nextLong(1,1000));
+                    }
+                    catch (InterruptedException exception){
+                        System.out.println("Thread has been interrupted.");
+                    }
+                }
             }
         };
+        hilo1.start();
 
     }
 }
