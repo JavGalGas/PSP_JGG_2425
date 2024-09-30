@@ -1,4 +1,4 @@
-package Ejercicio1a;
+package Unit1_Ejercicio1;
 
 import java.util.Random;
 import java.util.Scanner;

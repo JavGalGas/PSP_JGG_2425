@@ -1,4 +1,4 @@
-package Ejercicio1b;
+package Unit1_Ejercicio2;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -13,8 +13,8 @@ public class PrimeThread implements Runnable{
         HashSet<Integer> primeList = getPrimeNumbersUntil(num);
         System.out.println(name + ": Mostrando primos hasta el " + num);
         for (int i : primeList) {
-            System.out.println(name + ": " + i);
             try {
+                System.out.println(name + ": " + i);
                 Thread.sleep(random.nextLong(500, 1000));
             } catch (InterruptedException exception) {
                 System.out.println("Thread has been interrupted.");
@@ -22,9 +22,6 @@ public class PrimeThread implements Runnable{
         }
     }
 
-    public void start(){
-        run();
-    }
     public HashSet<Integer> getPrimeNumbersUntil(int num){
         HashSet<Integer> primeNumbers = new HashSet<>();
         for (int i = 1; i <= num; i++){
