@@ -1,7 +1,5 @@
 package Unit1_Ejercicio3;
 
-import Unit1_Ejercicio2.ThreadLauncher;
-
 import java.util.Scanner;
 
 public class Main {
@@ -11,7 +9,7 @@ public class Main {
         System.out.println("Introduce el número de hilos a crear:");
         int numThreads = scanner.nextInt();
         scanner.close();
-        ThreadLauncher threadLauncher = new ThreadLauncher();
+        Exercise3ThreadLauncher threadLauncher = new Exercise3ThreadLauncher();
         threadLauncher.launch(numThreads);
     }
 }

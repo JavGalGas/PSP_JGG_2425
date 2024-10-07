@@ -7,6 +7,7 @@ public class PrimeThread implements Runnable{
 
     private volatile String name;
     Random random = new Random();
+
     @Override
     public void run() {
         int num = random.nextInt(1, 100);

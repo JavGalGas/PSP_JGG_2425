@@ -3,7 +3,7 @@ package Unit1_Ejercicio3;
 import java.util.HashSet;
 import java.util.Random;
 
-public class PrimeThread implements Runnable{
+public class Exercise3PrimeThread implements Runnable{
 
     private volatile String name;
     Random random = new Random();
