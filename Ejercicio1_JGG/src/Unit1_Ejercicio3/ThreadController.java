@@ -1,5 +1,6 @@
 package Unit1_Ejercicio3;
 
+import javax.print.attribute.standard.MediaSize;
 import java.util.ArrayList;
 
 public class ThreadController implements Runnable{
@@ -7,15 +8,22 @@ public class ThreadController implements Runnable{
 
     @Override
     public void run() {
-        while(!threadList.isEmpty()) {
+        int terminatedThreads = 0;
+        while(terminatedThreads < threadList.size()) {
             try {
                 for (Thread thread: threadList) {
-                    if (!thread.isAlive()) {
-                        removeThread(thread);
-                        continue;
-                    }
+//                    if (thread.getState() == Thread.State.TERMINATED) {
+//                        try{
+//                            removeThread(thread);
+//                        }
+//                        catch (NullPointerException exception) {
+//                            System.out.println(exception.getMessage());
+//                        }
+//                    }
                     System.out.println(thread.getId() + " " + thread.getName() + " " + thread.getState());
-
+                    if(thread.getState() == Thread.State.TERMINATED) {
+                        terminatedThreads++;
+                    }
                 }
                 Thread.sleep(1000);
             }
@@ -31,7 +39,7 @@ public class ThreadController implements Runnable{
         threadList.add(thread);
     }
 
-    private void removeThread(Thread thread) {
+    private void removeThread(Thread thread) throws NullPointerException{
         if (thread == null || !threadList.contains(thread)) {
             throw new NullPointerException();
         }
