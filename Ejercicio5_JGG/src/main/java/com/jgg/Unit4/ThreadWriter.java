@@ -1,8 +1,8 @@
 package com.jgg.Unit4;
 
-import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.concurrent.TimeUnit;
 
 public class ThreadWriter implements Runnable {
     int frequency;
@@ -13,10 +13,10 @@ public class ThreadWriter implements Runnable {
 
     @Override
     public void run() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter("ThreadWriter.txt", true) )) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter("ThreadWriter.txt", false) )) {
             while (!Thread.currentThread().isInterrupted()) {
                 writer.println("!Hola mundo!");
-                Thread.sleep(1000);
+                Thread.sleep(TimeUnit.SECONDS.toMillis(frequency));
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

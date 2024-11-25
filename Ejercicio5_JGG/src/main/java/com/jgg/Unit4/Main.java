@@ -1,6 +1,5 @@
 package com.jgg.Unit4;
 
-import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -13,12 +12,14 @@ public class Main {
         System.out.println("Pulsa enter para interrrumpir el hilo: ");
         thread.start();
         scanner.nextLine();
+        scanner.nextLine();
         thread.interrupt();
         System.out.println("Hilo interrumpido.");
         try {
             thread.join();
+            System.out.println("Adiós");
         } catch (InterruptedException exception) {
-            exception.printStackTrace();
+            System.out.println(exception.getMessage());
         }
     }
 }
