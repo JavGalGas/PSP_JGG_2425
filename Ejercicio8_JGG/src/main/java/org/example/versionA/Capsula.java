@@ -1,8 +1,8 @@
 package org.example.versionA;
 
 public class Capsula {
-    String nombreVariedad;
-    int intensidad;
+    private String nombreVariedad;
+    private int intensidad;
 
     public Capsula(String nombreVariedad, int intensidad) {
         this.nombreVariedad = nombreVariedad;
