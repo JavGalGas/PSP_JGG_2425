@@ -7,22 +7,26 @@ import java.net.Socket;
 public class Servidor {
     public static void main(String[] args) {
         try (ServerSocket servidor = new ServerSocket(5000)) {
-            System.out.println("Esperando un cliente...");
-            try (Socket s = servidor.accept()){
-                System.out.println("hola");
-
-                InputStream in = s.getInputStream();
-//              OutputStream out = s.getOutputStream();
-
-                BufferedReader br = new BufferedReader(new InputStreamReader(in));
-//              br.readLine();
-//              PrintWriter pw = new PrintWriter(out, true);
-
-                while(true) {
-                    String message = br.readLine();
-                    System.out.println("Mensaje recibido: " + message);
+            while (true) {
+                System.out.println("Esperando un cliente...");
+                try (Socket s = servidor.accept()){
+                    System.out.println("Hola");
+                    Thread clientListener = new Thread(() -> {
+                        try {
+                            InputStream in = s.getInputStream();
+                            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+                            while(!Thread.currentThread().isInterrupted()) {
+                                String message = br.readLine();
+                                System.out.println("Mensaje recibido del usuario " + message);
+                            }
+                        } catch (IOException exception) {
+                            System.out.println(exception.getMessage());
+                        }
+                    });
+                    clientListener.start();
                 }
             }
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
