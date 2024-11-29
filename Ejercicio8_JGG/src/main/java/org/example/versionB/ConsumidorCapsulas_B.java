@@ -1,29 +1,38 @@
 package org.example.versionB;
 
+import org.example.versionA.Capsula;
+
+import java.util.List;
 import java.util.Random;
 
 
 public class ConsumidorCapsulas_B implements Runnable {
 
     Random rand = new Random();
-    private int min = 1000;
-    private int max = 3000;
+    public final List<Capsula> contenedor;
+
+    public ConsumidorCapsulas_B(List<Capsula> contenedor) {
+        this.contenedor = contenedor;
+    }
 
     @Override
     public void run() {
         while (Thread.currentThread().isAlive()) {
-            synchronized (Main.contenedor2) {
-                try {
-                    while (Main.contenedor2.size() < 6) {
-                        Main.contenedor2.wait();
+            try {
+                synchronized (contenedor) {
+                    while (contenedor.size() < 6) {
+                        contenedor.wait();
                     }
                     System.out.println("Hilo Consumidor: Creando caja con 6 cápsulas");
-                    Thread.sleep(rand.nextInt((max - min) + 1) + min);
-                    Main.contenedor2.subList(0, 6).clear();
-                    System.out.println("Hilo Consumidor: Caja creada");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    contenedor.subList(0, 6).clear();
+                    contenedor.notify();
                 }
+                int min = 1000;
+                int max = 3000;
+                Thread.sleep(rand.nextInt((max - min) + 1) + min);
+                System.out.println("Hilo Consumidor: Caja creada");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

@@ -1,17 +1,19 @@
 package org.example.versionB;
 
 import org.example.versionA.Capsula;
+import org.example.versionA.ProductorCapsulas;
 
+import java.util.List;
 import java.util.Random;
 
 public class ProductorCapsulas_B implements Runnable {
     Random rand = new Random();
-    private int min = 500;
-    private int max = 1000;
-    private String variedadCapsula;
-    private int intensidadCapsula;
+    public final List<Capsula> contenedor;
+    private final String variedadCapsula;
+    private final int intensidadCapsula;
 
-    public ProductorCapsulas_B(String variedad, int intensidad) {
+    public ProductorCapsulas_B(List<Capsula> contenedor, String variedad, int intensidad) {
+        this.contenedor = contenedor;
         variedadCapsula = variedad;
         intensidadCapsula = intensidad;
     }
@@ -20,15 +22,11 @@ public class ProductorCapsulas_B implements Runnable {
     public void run() {
         while (Thread.currentThread().isAlive()) {
             try{
-                synchronized(Main.contenedor2) {
-                    Main.contenedor2.add(new Capsula(variedadCapsula, intensidadCapsula));
-                    int contenedorSize = Main.contenedor2.size();
-                    System.out.println("Hilo Productor: Se ha fabricado una cápsula. Total en contenedor: " + contenedorSize);
-                    if (contenedorSize >= 6) {
-                        Main.contenedor2.notify();
-                    }
-                }
+                int min = 500;
+                int max = 1000;
                 Thread.sleep(rand.nextInt((max - min) + 1) + min);
+                contenedor.add(new Capsula(variedadCapsula, intensidadCapsula));
+                System.out.println("Hilo Productor: Se ha fabricado una cápsula. Total en contenedor: " + contenedor.size());
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }

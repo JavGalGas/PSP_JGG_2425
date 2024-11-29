@@ -9,12 +9,9 @@ public class Capsula {
         this.intensidad = intensidad<1 || intensidad>9 ? 1 : intensidad;
     }
 
-    public String getNombreVariedad() {
-        return nombreVariedad;
-    }
-
-    public int getIntensidad() {
-        return intensidad;
+    @Override
+    public String toString() {
+        return "Capsula: { variedad: " + nombreVariedad + ", intensidad: " + intensidad + "}";
     }
 
 }

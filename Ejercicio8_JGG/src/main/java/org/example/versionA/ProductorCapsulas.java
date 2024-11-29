@@ -1,15 +1,16 @@
 package org.example.versionA;
 
+import java.util.List;
 import java.util.Random;
 
 public class ProductorCapsulas implements Runnable {
+    public final List<Capsula> contenedor;
     Random rand = new Random();
-    private int min = 500;
-    private int max = 1000;
-    private String variedadCapsula;
-    private int intensidadCapsula;
+    private final String variedadCapsula;
+    private final int intensidadCapsula;
 
-    public ProductorCapsulas(String variedad, int intensidad) {
+    public ProductorCapsulas(List<Capsula> contenedor, String variedad, int intensidad) {
+        this.contenedor = contenedor;
         variedadCapsula = variedad;
         intensidadCapsula = intensidad;
     }
@@ -18,15 +19,20 @@ public class ProductorCapsulas implements Runnable {
     public void run() {
         while (Thread.currentThread().isAlive()) {
             try{
-                synchronized(Main.contenedor) {
-                    Main.contenedor.add(new Capsula(variedadCapsula, intensidadCapsula));
-                    int contenedorSize = Main.contenedor.size();
-                    System.out.println("Hilo Productor: Se ha fabricado una cápsula. Total en contenedor: " + contenedorSize);
-                    if (contenedorSize >= 6) {
-                        Main.contenedor.notify();
+                synchronized (contenedor) {
+                    int capacidad = 6;
+                    while(contenedor.size() >= capacidad) {
+                        contenedor.wait();
                     }
+                    contenedor.add(new Capsula(variedadCapsula, intensidadCapsula));
+                    System.out.println("Hilo Productor: Se ha fabricado una cápsula. Total en contenedor: " + contenedor.size());
+                    if (contenedor.size() == capacidad) {
+                        contenedor.notify();
+                    }
+                    int min = 500;
+                    int max = 1000;
+                    Thread.sleep(rand.nextInt((max - min) + 1) + min);
                 }
-                Thread.sleep(rand.nextInt((max - min) + 1) + min);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }

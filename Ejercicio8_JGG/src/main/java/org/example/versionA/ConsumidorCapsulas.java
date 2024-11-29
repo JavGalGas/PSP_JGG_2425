@@ -1,21 +1,30 @@
 package org.example.versionA;
 
+import java.util.List;
+
 public class ConsumidorCapsulas implements Runnable {
+
+    public final List<Capsula> contenedor;
+
+    public ConsumidorCapsulas(List<Capsula> contenedor) {
+        this.contenedor = contenedor;
+    }
 
     @Override
     public void run() {
         while (Thread.currentThread().isAlive()) {
-            synchronized (Main.contenedor) {
-                try {
-                    while (Main.contenedor.size() < 6) {
-                        Main.contenedor.wait();
+            try {
+                synchronized (contenedor) {
+                    while (contenedor.size() < 6) {
+                        contenedor.wait();
                     }
                     System.out.println("Hilo Consumidor: Creando caja con 6 cápsulas");
-                    Main.contenedor.subList(0, 6).clear();
+                    contenedor.subList(0, 6).clear();
                     System.out.println("Hilo Consumidor: Caja creada");
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    contenedor.notify();
                 }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
