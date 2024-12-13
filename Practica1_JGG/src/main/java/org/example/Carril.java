@@ -39,7 +39,7 @@ public class Carril {
         int fin = Math.min(posCorredor * idCorredor, posiciones.length);
         for (int i = inicio; i < fin; i++) {
             if (posiciones[i] != null && posiciones[i].getId() == idCorredor) {
-                if (i + 1 < fin && posiciones[i + 1] != null) {
+                if (posiciones[i + 1] != null) {
                     return posiciones[i + 1];
                 }
                 break;

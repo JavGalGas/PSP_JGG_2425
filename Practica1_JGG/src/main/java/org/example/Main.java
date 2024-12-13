@@ -2,9 +2,10 @@ package org.example;
 import java.util.concurrent.*;
 
 public class Main {
+    static int posicion = 1;
+
     public static void main(String[] args) {
         ExecutorService executor = Executors.newFixedThreadPool(16);
-        int posicion = 1;
         Carril[] carriles = new Carril[4];
         for (int i = 0; i < 4; i++) {
             carriles[i] = new Carril(i, 4);
@@ -22,14 +23,19 @@ public class Main {
                 corredoresExecutor.shutdown();
                 try {
                     corredoresExecutor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
-                    System.out.println("PODIUM: " + posicion + "º para el equipo de carril");
+                    System.out.println("PODIUM: Posición " + posicion + "º para el equipo de carril " + carril.getId());
                     System.out.println("Carril " + carril.getId() + " ha finalizado la carrera.");
+                    setPosition(1);
                 } catch (InterruptedException e) {
                     System.out.println(e.getMessage());
                 }
             });
         }
-
         executor.shutdown();
+
+    }
+
+    public static void setPosition(int posicion) {
+        Main.posicion += posicion;
     }
 }

@@ -17,16 +17,15 @@ public class Corredor implements Runnable{
     public void recibirTestigo() {
         System.out.println("Carril " + carril.getId() + " Corredor " + id + ": Recibo el testigo");
         tieneTestigo = true;
-        notify();
     }
 
     @Override
     public void run() {
         try {
-            synchronized (this) {
+            synchronized (carril) {
                 while (!tieneTestigo) {
                     System.out.println("Carril " + carril.getId() + " Corredor " + id + ": A la espera de recibir el testigo");
-                    wait();
+                    carril.wait();
                     if (!tieneTestigo) {
                         System.out.println("Carril " + carril.getId() + " Corredor " + id + ": Me han despertado. No tengo el testigo");
                     } else {
@@ -42,21 +41,21 @@ public class Corredor implements Runnable{
                 if (posicion == fin - 1 && id < 4) {
                     System.out.println("Carril " + carril.getId() + " Corredor " + id + ": He terminado de correr. Posición final: " + posicion);
                     tieneTestigo = false;
-                } else if (posicion == 400000) {
-                    System.out.println("Carril " + carril.getId() + " Corredor " + id + ": He terminado de correr. Posición final: " + posicion);
+                } else if (posicion >= 399999) {
                     tieneTestigo = false;
                 } else {
-                    if (carril.avanzarCorredor(id)) {
-                        Thread.sleep(10);
-                    }
+//                    if (carril.avanzarCorredor(id)) {
+//                        Thread.sleep(10);
+//                    }
+                    carril.avanzarCorredor(id);
                 }
-
-                Corredor siguiente = carril.puedePasarTestigo(id);
-                if (siguiente != null) {
-                    System.out.println("Carril " + carril.getId() + " Corredor " + id + ": Pierdo el testigo");
-                    siguiente.recibirTestigo();
-                    tieneTestigo = false;
-                }
+            }
+            Corredor siguiente = carril.puedePasarTestigo(id);
+            if (siguiente != null) {
+                System.out.println("Carril " + carril.getId() + " Corredor " + id + ": Pierdo el testigo");
+                siguiente.recibirTestigo();
+            } else {
+                System.out.println("Carril " + carril.getId() + " Corredor " + id + ": No hay siguiente corredor...");
             }
             System.out.println("Carril " + carril.getId() + " : Despierto a todos");
             synchronized (carril) {

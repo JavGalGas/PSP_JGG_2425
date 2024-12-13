@@ -6,10 +6,12 @@ import java.net.Socket;
 
 public class Servidor {
     public static void main(String[] args) {
+        boolean running = true;
         try (ServerSocket servidor = new ServerSocket(5000)) {
-            while (true) {
+            while (running) {
                 System.out.println("Esperando un cliente...");
-                try (Socket s = servidor.accept()){
+                try{
+                    Socket s = servidor.accept();
                     System.out.println("Hola");
                     Thread clientListener = new Thread(() -> {
                         try {
@@ -24,6 +26,9 @@ public class Servidor {
                         }
                     });
                     clientListener.start();
+                } catch (IOException exception) {
+                    System.out.println(exception.getMessage());
+                    running = false;
                 }
             }
 
