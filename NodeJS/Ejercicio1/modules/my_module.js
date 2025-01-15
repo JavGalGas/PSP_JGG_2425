@@ -10,4 +10,6 @@ function getContentType(ext) {
             return 'application/octet-stream';
     }
 }
-module.exports = getContentType;
+module.exports = {
+    getContent : getContentType
+};

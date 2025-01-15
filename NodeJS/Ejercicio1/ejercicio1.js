@@ -7,10 +7,14 @@ const server = http.createServer((request, response) => {
     let filePath = '.' + request.url;
     if (filePath === './') {
         filePath = './index.html';
+    } else if (filePath === './pagina1') {
+        filePath = './pagina1.html';
+    } else if (filePath === './pagina2') {
+        filePath = './pagina2.html'
     }
 
     const extname = String(path.extname(filePath)).toLowerCase();
-    const contentType = myModule.getContentType(extname);
+    const contentType = myModule.getContent(extname);
 
     fs.readFile(filePath, (error, content) => {
         if (error) {
@@ -29,5 +33,5 @@ const server = http.createServer((request, response) => {
 });
 
 server.listen(80, () => {
-    console.log('Server running at http://127.0.0.1:80/');
+    console.log('Server running at: localhost');
 });
