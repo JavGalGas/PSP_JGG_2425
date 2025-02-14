@@ -57,13 +57,13 @@ const server = http.createServer((request, response) => {
             }
         } else {
             const color = url_parts.searchParams.get('color') || 'white';
-            const modifiedContent = content.replace('</head>', `<style>body { background-color: ${color}; }</style></head>`);
+            const modifiedContent = content.toString('utf-8').replace('</head>', `<style>body { background-color: ${color}; }</style></head>`);
             response.writeHead(200, { 'Content-Type': contentType });
             response.end(modifiedContent, 'utf-8');
         }
     });
 });
 
-server.listen(80, () => {
+server.listen(8080, () => {
     console.log(`Server running at: ${server.address().port}`);
 });
